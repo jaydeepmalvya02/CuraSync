@@ -12,6 +12,17 @@ const changeAvailability = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+// Api for Doctors list in Client
+const doctorList=async(req,res)=>{
 
+  try {
+    const doctors =await Doctor.find({}).select(["-password","-email"]);
+   res.json({success:true,doctors})
+  } catch (error) {
+      console.error(error.message);
 
-export {changeAvailability}
+    res.json({success:false,message:error.message})
+  }
+}
+
+export {changeAvailability,doctorList}
