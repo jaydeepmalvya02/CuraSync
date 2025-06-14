@@ -3,11 +3,11 @@ import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import dayjs from "dayjs";
-
+import{useNavigate} from 'react-router-dom'
 const MyAppointments = () => {
   const { backendUrl, token ,getdoctorData} = useContext(AppContext);
   const [appointments, setAppointments] = useState([]);
-
+  const navigate=useNavigate()
   const getUserAppointments = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/user/appointments`, {
@@ -54,7 +54,17 @@ const initPay=(order)=>{
     reciept:order.reciept,
     handler:async(response)=>{
       console.log(response);
-      
+      try {
+        const {data}=await axios.post(`${backendUrl}/api/user/verifyRazorpay`,response,{headers:{token}})
+        if(data.success){
+          getUserAppointments()
+          navigate('/my-appointments')
+          toast.success(data.message)
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error(error.message);
+      }
     }
   };
   const rzp=new window.Razorpay(options)
@@ -67,7 +77,7 @@ const appointmentRazorpay=async(appointmentId)=>{
     if(data.success){
       console.log(data.order);
       initPay(data.order)
-      toast.success(data.success)
+      // toast.success(data.success)
     }
     else{
       toast.error(data.message)

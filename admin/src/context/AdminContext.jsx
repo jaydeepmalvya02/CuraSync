@@ -9,15 +9,17 @@ const AdminContextProvider = (props) => {
     localStorage.getItem("aToken") ? localStorage.getItem("aToken") : ""
   );
   const [doctors, setDoctors] = useState([]);
+  const [appointments, setAppointments] = useState([]);
   const backendUrl = import.meta.env.BACKEND_URL || "http://localhost:7000";
 
   const getAllDoctors = async () => {
     try {
-    const { data } = await axios.get(`${backendUrl}/api/admin/all-doctors`,{headers:{aToken}});
+      const { data } = await axios.get(`${backendUrl}/api/admin/all-doctors`, {
+        headers: { aToken },
+      });
       if (data.success) {
         setDoctors(data.doctors);
         console.log(data.doctors);
-        
       } else {
         toast.error(data.message);
       }
@@ -27,17 +29,37 @@ const AdminContextProvider = (props) => {
     }
   };
 
- const changeAvailability=async(docId)=>{
-  const { data } = await axios.post(
-    `${backendUrl}/api/admin/change-availability`,
-    { docId },
-    { headers: { aToken } }
-  );
-  if(data.success){
-    toast.success(data.message)
-    getAllDoctors()
-  }
- } 
+  const changeAvailability = async (docId) => {
+    const { data } = await axios.post(
+      `${backendUrl}/api/admin/change-availability`,
+      { docId },
+      { headers: { aToken } }
+    );
+    if (data.success) {
+      toast.success(data.message);
+      getAllDoctors();
+    }
+  };
+
+  // Fetch all appointments
+  const getAllAppointments = async () => {
+    try {
+      const { data } = await axios.get(
+        `${backendUrl}/api/admin/appointments`,
+        { headers: { aToken } }
+      );
+      if (data.success) {
+        setAppointments(data.appointments);
+        console.log(data.appointments);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error(error.message);
+      toast.error(error.message);
+    }
+  };
+
   const value = {
     aToken,
     setAToken,
@@ -45,6 +67,9 @@ const AdminContextProvider = (props) => {
     doctors,
     getAllDoctors,
     changeAvailability,
+    appointments,
+    setAppointments,
+    getAllAppointments,
   };
   return (
     <AdminContext.Provider value={value}>
