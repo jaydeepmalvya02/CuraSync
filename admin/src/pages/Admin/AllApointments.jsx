@@ -5,8 +5,8 @@ import { useEffect } from 'react'
 import { AppContext } from '../../context/AppContext'
 import { assets } from "../../assets/assets";
 const AllApointments = () => {
-  const {aToken,appointments,getAllAppointments}=useContext(AdminContext)
-  const {calculateAge}=useContext(AppContext)
+  const {aToken,appointments,getAllAppointments,cancelAppointment}=useContext(AdminContext)
+  const {calculateAge,formatDate}=useContext(AppContext)
   useEffect(()=>{
     if(aToken){
       getAllAppointments()
@@ -41,7 +41,7 @@ const AllApointments = () => {
             </div>
             <p className="max-sm:hidden">{calculateAge(item.userData.dob)}</p>
             <p>
-              {item.slotDate},{item.slotTime}
+              {formatDate(item.slotDate)},{item.slotTime}
             </p>
             <div className="flex items-center gap-2">
               <img
@@ -57,6 +57,7 @@ const AllApointments = () => {
               <p className='text-red-400 text-xs font-medium'>Cancelled</p>
             ) : (
               <img
+              onClick={()=>cancelAppointment(item._id)}
                 className="w-8 cursor-pointer"
                 src={assets.cancel_icon}
                 alt=""
