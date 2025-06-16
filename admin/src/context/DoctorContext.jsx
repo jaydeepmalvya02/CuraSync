@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 // eslint-disable-next-line react-refresh/only-export-components
 export const DoctorContext = createContext();
 const DoctorContextProvider = (props) => {
-  const backendUrl = import.meta.env.BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [dToken, setDToken] = useState(
     localStorage.getItem("dToken") ? localStorage.getItem("dToken") : ""
   );
