@@ -3,6 +3,7 @@ import { useState } from "react";
 import { createContext } from "react";
 import { toast } from "react-toastify";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const DoctorContext = createContext();
 const DoctorContextProvider = (props) => {
   const backendUrl = import.meta.env.BACKEND_URL;
