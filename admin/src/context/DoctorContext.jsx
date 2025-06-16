@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 export const DoctorContext = createContext();
 const DoctorContextProvider = (props) => {
-  const backendUrl = import.meta.env.BACKEND_URL || "http://localhost:7000";
+  const backendUrl = import.meta.env.BACKEND_URL;
   const [dToken, setDToken] = useState(
     localStorage.getItem("dToken") ? localStorage.getItem("dToken") : ""
   );
@@ -110,7 +110,9 @@ const DoctorContextProvider = (props) => {
     dashData,
     setDashData,
     getDashData,
-    getProfileData,setProfileData,profileData
+    getProfileData,
+    setProfileData,
+    profileData,
   };
   return (
     <DoctorContext.Provider value={value}>
