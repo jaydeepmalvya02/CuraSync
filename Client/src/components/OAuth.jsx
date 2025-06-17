@@ -1,6 +1,6 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "../firebase.js";
-
+import { FcGoogle } from "react-icons/fc"; 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -47,9 +47,12 @@ export default function OAuth() {
     <button
       onClick={handleGoogleClick}
       type="button"
-      className="bg-red-700 text-white p-3 rounded-lg w-full uppercase hover:opacity-95"
+      className="flex items-center justify-center w-full sm:w-auto gap-3 bg-white border border-gray-300 px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition duration-200"
     >
-      Continue with google
+      <FcGoogle size={22} />
+      <span className="text-gray-700 font-medium text-sm">
+        Sign in with Google
+      </span>
     </button>
   );
 }
