@@ -3,7 +3,7 @@ import { assets } from "../../assets/assets";
 import { AdminContext } from "../../context/AdminContext";
 import { toast } from "react-toastify";
 import axios from "axios";
-
+import {  useNavigate} from "react-router-dom";
 
 const AddDoctor = () => {
   const [docImg, setDocImg] = useState(false);
@@ -17,7 +17,7 @@ const AddDoctor = () => {
   const [degree, setDegree] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
-
+ const navigate= useNavigate ()
   const { backendUrl, aToken } = useContext(AdminContext);
   const handleSubmit =async (e) => {
     e.preventDefault();
@@ -45,8 +45,9 @@ const AddDoctor = () => {
       const {data}=await axios.post(`${backendUrl}/api/admin/add-doctor`,formData,{
         headers:{aToken}
       })
-      if (data.success==true){
-        toast.success(data.message)
+      if (data.success){
+        navigate("/doctor-list");
+        toast.success('Doctor Added')
         setDocImg(false)
         setName('')
         setEmail('')

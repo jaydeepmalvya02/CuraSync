@@ -35,6 +35,10 @@ const NavBar = () => {
           <li className="py-1">CONTACT</li>
           <hr className=" border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
         </NavLink>
+        <a target="_blank"
+         href="https://cura-sync-admin.vercel.app" 
+         className="border  px-5 py-1.5 rounded-full text-xs"
+         >Admin Panel</a>
       </ul>
       <div className=" flex items-center gap-4 ">
         {token ? (
@@ -94,11 +98,7 @@ const NavBar = () => {
             />
           </div>
           <ul className="flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium">
-            <NavLink
-           
-              onClick={() => setShowMenu(false)}
-              to="/"
-            >
+            <NavLink onClick={() => setShowMenu(false)} to="/">
               <p className="px-4 py-2 rounded inline-block">Home</p>
             </NavLink>
             <NavLink onClick={() => setShowMenu(false)} to="/doctors">
