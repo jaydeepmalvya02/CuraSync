@@ -144,22 +144,29 @@ const doctorProfile = async (req, res) => {
   }
 };
 // API to update doctor profile data from docotr Panel
-const updateDoctorProfile=async(req,res)=>{
- 
-  
+const updateDoctorProfile = async (req, res) => {
   try {
-    const {docId,fees,address,available}=req.body
+    const { docId, fees, address, available } = req.body;
     console.log(fees);
-    
-    await doctorModel.findByIdAndUpdate(docId,{fees,address,available})
-    res.json({success:true,message:'Profile Updated'})
 
+    await doctorModel.findByIdAndUpdate(docId, { fees, address, available });
+    res.json({ success: true, message: "Profile Updated" });
   } catch (error) {
     console.error(error.message);
 
     res.json({ success: false, message: error.message });
   }
-}
+};
+// API for delete appointment from docotr panel
+const deleteDoctorAppointment = async (req, res) => {
+  try {
+    const { appointmentId } = req.body;
+    await Appointment.findByIdAndDelete(appointmentId);
+  } catch (error) {
+    console.error(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
 export {
   changeAvailability,
   doctorList,
@@ -168,5 +175,7 @@ export {
   appointmentCancel,
   appointmentComplete,
   doctorDashboard,
-  doctorProfile,updateDoctorProfile
+  doctorProfile,
+  updateDoctorProfile,
+  deleteDoctorAppointment
 };

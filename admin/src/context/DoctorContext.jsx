@@ -99,6 +99,24 @@ const DoctorContextProvider = (props) => {
       toast.error(error.message);
     }
   };
+  const deleteAppointment = async (appointmentId) => {
+    try {
+      const { data } = await axios.post(
+        `${backendUrl}/api/doctor/delete-doctor-appointment`,
+        { appointmentId },
+        { headers: { dToken } }
+      );
+      if (data.success) {
+        getAppointments();
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error(error.message);
+      toast.error(error.message);
+    }
+  };
   const value = {
     backendUrl,
     dToken,
@@ -114,6 +132,7 @@ const DoctorContextProvider = (props) => {
     getProfileData,
     setProfileData,
     profileData,
+    deleteAppointment
   };
   return (
     <DoctorContext.Provider value={value}>

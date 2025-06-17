@@ -72,7 +72,7 @@ const addDoctor = async (req, res) => {
     };
     const newDoctor = new doctorModel(doctorData);
     const data = await newDoctor.save();
-    res.json({ message: "Doctor add" }, data);
+    res.json({success:true, message: "Doctor add" }, data);
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });
@@ -161,5 +161,16 @@ const adminDashboard=async(req,res)=>{
     res.json({ success: false, message: error.message });
   }
 }
+// API to delete appointment
+const deleteAppointment=async(req,res)=>{
+  try {
+    const {appointmentId}=req.body
+    await Appointment.findByIdAndDelete(appointmentId)
+    res.json({success:true,message:'Appointment Deleted'})
+  } catch (error) {
+    console.error(error.message);
+    res.json({ success: false, message: error.message });
+  }
+}
 
-export { addDoctor,loginAdmin,allDoctors,appointmentsAdmin,appointmentCancel,adminDashboard };
+export { addDoctor,loginAdmin,allDoctors,appointmentsAdmin,appointmentCancel,adminDashboard,deleteAppointment };
