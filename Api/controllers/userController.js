@@ -76,7 +76,7 @@ const login = async (req, res) => {
 //google api
 const google = async (req, res) => {
   try {
-    const { email, name } = req.body;
+    const {  name,email } = req.body;
     // console.log(req.body);
     let user = await User.findOne({
       email,
