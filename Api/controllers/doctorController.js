@@ -162,6 +162,7 @@ const deleteDoctorAppointment = async (req, res) => {
   try {
     const { appointmentId } = req.body;
     await Appointment.findByIdAndDelete(appointmentId);
+    res.json({success:true,message:'Appointment Deleted'})
   } catch (error) {
     console.error(error.message);
     res.json({ success: false, message: error.message });
