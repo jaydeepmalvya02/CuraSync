@@ -3,6 +3,7 @@ import {
   bookAppointment,
   cancelAppointment,
   getProfile,
+  google,
   listAppointment,
   login,
   paymentRazorpay,
@@ -16,6 +17,7 @@ import upload from "../middlewares/multer.js";
 const userRouter = express.Router();
 userRouter.post("/register", register);
 userRouter.post("/login", login);
+userRouter.post("/google", google);
 userRouter.get("/profile", authUser, getProfile);
 userRouter.post(
   "/update-profile",

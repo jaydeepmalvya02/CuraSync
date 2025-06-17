@@ -97,6 +97,14 @@ const google = async (req, res) => {
 
       await user.save();
     }
+    else{
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+      const { password: pass, ...rest } = user._doc;
+      res
+        .cookie("token", token, { httpOnly: true })
+        
+        .json({success:true,rest});
+    }
     return CreatePayload(user, res);
   } catch (error) {
     console.error("Google login error:", error.message);

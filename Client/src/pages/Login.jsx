@@ -3,6 +3,7 @@ import { AppContext } from "../context/AppContext";
 import axios from 'axios'
 import { toast,ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 const Login = () => {
   const [state, setState] = useState("Sign Up");
   const [email, setEmail] = useState("");
@@ -57,9 +58,7 @@ const Login = () => {
   },[token])
   return (
     <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
-   
       <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-[96px] border rounded-xl shadow-lg text-sm text-[#5E5E5E]">
-    
         <p className="font-semibold text-2xl">
           {state === "Sign Up" ? "Create Account" : "Login"}
         </p>
@@ -109,6 +108,7 @@ const Login = () => {
         >
           {state === "Sign Up" ? "Create Account" : "Login"}
         </button>
+        <OAuth  />
 
         {state === "Sign Up" ? (
           <p>

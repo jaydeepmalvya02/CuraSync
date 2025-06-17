@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 
 import axios from "axios";
 import { toast } from "react-toastify";
+
 export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
@@ -35,6 +36,7 @@ const AppContextProvider = (props) => {
       });
       if (data.success) {
         setUserData(data.userData);
+       
       }
       else{
         toast.error(data.message)
@@ -53,7 +55,9 @@ const AppContextProvider = (props) => {
     setUserData,
     userData,
     loadUserProfileData,
-    getdoctorData
+    getdoctorData,
+    
+  
   };
   useEffect(() => {
     getdoctorData();
