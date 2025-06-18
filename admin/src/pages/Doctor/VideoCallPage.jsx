@@ -14,7 +14,7 @@ const VideoCallPage = () => {
     const fetchAppointment = async () => {
       try {
         const { data } = await axios.get(
-          `${backendUrl}/api/doctor/get-appointment/${id}`,
+          `${backendUrl}/api/doctor/video-call/${id}`,
           {
             headers: { dToken },
           }
