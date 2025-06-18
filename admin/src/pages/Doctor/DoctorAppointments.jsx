@@ -3,7 +3,7 @@ import { DoctorContext } from "../../context/DoctorContext";
 import { AppContext } from "../../context/AppContext";
 import { assets } from "../../assets/assets";
 import { FaTrash } from "react-icons/fa";
-
+import {useNavigate} from 'react-router-dom'
 const DoctorAppointments = () => {
   const {
     appointments,
@@ -15,7 +15,7 @@ const DoctorAppointments = () => {
   } = useContext(DoctorContext);
 
   const { calculateAge, formatDate } = useContext(AppContext);
-
+  const navigate=useNavigate()
   useEffect(() => {
     if (dToken) getAppointments();
   }, [dToken]);
@@ -79,15 +79,25 @@ const DoctorAppointments = () => {
               {/* Actions */}
               <div className="flex gap-2 justify-center max-sm:w-full">
                 {item.cancelled ? (
-                  <span className="text-xs font-semibold text-red-600 bg-red-100 px-2 py-1 rounded-full">
-                    Cancelled
-                  </span>
-                ) : item.isCompleted ? (
-                  <span className="text-xs font-semibold text-green-600 bg-green-100 px-2 py-1 rounded-full">
-                    Completed
-                  </span>
+                  <div className="flex justify-center items-center">
+                    <span className="text-xs font-semibold text-red-600 bg-red-100 px-2 py-1 rounded-full">
+                      Cancelled
+                    </span>
+                  </div>
+                ) : item.isCompleted && item.payment ? (
+                  <div className="flex justify-center">
+                    <button
+                      onClick={() =>
+                        navigate(`/video-call/${item._id}`)
+                      }
+                      className="whitespace-nowrap text-blue-600 hover:text-white hover:bg-blue-600 border border-blue-600 px-3 py-1 rounded-md text-xs transition"
+                      title="Join Video Call"
+                    >
+                      🎥 Video Call
+                    </button>
+                  </div>
                 ) : (
-                  <>
+                  <div className="flex flex-wrap justify-center gap-2">
                     <img
                       src={assets.cancel_icon}
                       alt="Cancel"
@@ -105,12 +115,12 @@ const DoctorAppointments = () => {
                     <button
                       onClick={() => deleteAppointment(item._id)}
                       title="Delete Appointment"
-                      className="flex items-center gap-1 text-red-600 border border-red-600 px-3 py-1 rounded-md hover:bg-red-600 hover:text-white text-xs transition"
+                      className="whitespace-nowrap flex items-center gap-1 text-red-600 border border-red-600 px-3 py-1 rounded-md hover:bg-red-600 hover:text-white text-xs transition"
                     >
                       <FaTrash />
                       Delete
                     </button>
-                  </>
+                  </div>
                 )}
               </div>
             </div>

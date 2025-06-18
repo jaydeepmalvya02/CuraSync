@@ -168,6 +168,18 @@ const deleteDoctorAppointment = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+// GET appointment by id
+const getAppointment=async(req,res)=>{
+  try {
+    const appointmentId=req.params.id;
+    const appointmentData=await Appointment.findById(appointmentId)
+    res.json({success:true,appointmentData})
+  } catch (error) {
+    console.error(error.message);
+    res.json({ success: false, message: error.message });
+  }
+}
 export {
   changeAvailability,
   doctorList,
