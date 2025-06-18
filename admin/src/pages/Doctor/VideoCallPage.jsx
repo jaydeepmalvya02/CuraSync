@@ -3,13 +3,13 @@ import { useParams } from "react-router-dom";
 import JitsiMeet from "../../components/JitSiMeet";
 import axios from "axios";
 import { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
+import { DoctorContext } from "../../context/DoctorContext";
 
 const VideoCallPage = () => {
   const { id } = useParams(); // appointment ID
   const [roomName, setRoomName] = useState(null);
   const [displayName, setDisplayName] = useState("Doctor");
-  const { dToken, backendUrl } = useContext(AppContext);
+  const { dToken, backendUrl } = useContext(DoctorContext);
   useEffect(() => {
     const fetchAppointment = async () => {
       try {
@@ -20,12 +20,11 @@ const VideoCallPage = () => {
           }
         );
 
-
         if (data.success && data.appointmentData) {
           console.log(data);
-          
+
           setRoomName(data.appointmentData.jitsiRoom);
-          setDisplayName(data.appointmentData.docData?.name || "User");
+          setDisplayName(data.appointmentData.docData?.name || "Doctor");
         } else {
           console.error("Invalid appointment data:", data);
         }
