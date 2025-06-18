@@ -190,5 +190,6 @@ export {
   doctorDashboard,
   doctorProfile,
   updateDoctorProfile,
-  deleteDoctorAppointment
+  deleteDoctorAppointment,
+  getAppointment
 };

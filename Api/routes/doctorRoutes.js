@@ -7,6 +7,7 @@ import {
   doctorDashboard,
   doctorList,
   doctorProfile,
+  getAppointment,
   loginDoctor,
   updateDoctorProfile,
 } from "../controllers/doctorController.js";
@@ -20,6 +21,7 @@ doctorRouter.post("/complete-appointment", authDoctor, appointmentComplete);
 doctorRouter.post("/cancel-appointment", authDoctor, appointmentCancel);
 doctorRouter.get("/dashboard", authDoctor, doctorDashboard);
 doctorRouter.get("/profile", authDoctor, doctorProfile);
+doctorRouter.get("/video-call", authDoctor, getAppointment);
 doctorRouter.post("/update-profile", authDoctor, updateDoctorProfile);
 doctorRouter.post(
   "/delete-doctor-appointment",
