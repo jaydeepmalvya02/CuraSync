@@ -1,28 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import JitsiMeet from "../../components/JitSiMeet";
 import axios from "axios";
-import { useContext } from "react";
 import { DoctorContext } from "../../context/DoctorContext";
 
 const VideoCallPage = () => {
-  const { id } = useParams(); // appointment ID
+  const { id } = useParams();
   const [roomName, setRoomName] = useState(null);
   const [displayName, setDisplayName] = useState("Doctor");
   const { dToken, backendUrl } = useContext(DoctorContext);
+
   useEffect(() => {
     const fetchAppointment = async () => {
       try {
         const { data } = await axios.get(
           `${backendUrl}/api/doctor/video-call/${id}`,
-          {
-            headers: { dToken },
-          }
+          { headers: { dToken } }
         );
 
         if (data.success && data.appointmentData) {
-          console.log(data);
-
           setRoomName(data.appointmentData.jitsiRoom);
           setDisplayName(data.appointmentData.docData?.name || "Doctor");
         } else {
@@ -37,12 +33,14 @@ const VideoCallPage = () => {
   }, [backendUrl, dToken, id]);
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl mb-4">Join Consultation</h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col items-center justify-center px-4 py-6">
+      <h1 className="text-xl sm:text-3xl font-semibold mb-6 text-gray-800 text-center">
+        Join Consultation
+      </h1>
       {roomName ? (
         <JitsiMeet roomName={roomName} displayName={displayName} />
       ) : (
-        <p>Loading video room...</p>
+        <p className="text-gray-500 text-center">Loading video room...</p>
       )}
     </div>
   );
