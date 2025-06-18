@@ -11,12 +11,13 @@ import Apppointment from "./pages/Apppointment";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
+import VideoCallPage from "./pages/VideoCallPage";
 
 function App() {
   return (
     <div className="mx-4 sm:mx-[10%]">
-      <ToastContainer/>
-      <NavBar/>
+      <ToastContainer />
+      <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/doctors" element={<Doctors />} />
@@ -27,8 +28,9 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/doctors/:speciality" element={<Doctors />} />
         <Route path="/appointment/:docId" element={<Apppointment />} />
+        <Route path="/video-call/:id" element={<VideoCallPage />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

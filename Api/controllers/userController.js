@@ -7,6 +7,7 @@ import { v2 as cloudinary } from "cloudinary";
 import doctorModel from "../models/doctorModel.js";
 import Appointment from "../models/appointmentModel.js";
 import razorpay from "razorpay";
+import crypto from "crypto";
 const CreatePayload = (user, res) => {
   const payload = {
     user: {
@@ -104,7 +105,6 @@ const google = async (req, res) => {
   }
 };
 
-
 // API to Get user profile data
 const getProfile = async (req, res) => {
   console.log("id:", req.body);
@@ -160,19 +160,19 @@ const updateProfile = async (req, res) => {
   }
 };
 
-// Api to book Appointment
+// Api to book Appointment with video call generation
 
 const bookAppointment = async (req, res) => {
   try {
-    console.log(req.body);
-
     const { userId, docId, slotDate, slotTime } = req.body;
+
     const docData = await doctorModel.findById(docId).select("-password");
     if (!docData.available) {
-      return res.json({ success: false, message: "Doctor not Available" });
+      return res.json({ success: false, message: "Doctor not available" });
     }
-    let slots_booked = docData.slots_booked;
-    // checking for slot availability
+
+    // Check if the slot is already booked
+    let slots_booked = docData.slots_booked || {};
     if (slots_booked[slotDate]) {
       if (slots_booked[slotDate].includes(slotTime)) {
         return res.json({ success: false, message: "Slot not available" });
@@ -180,11 +180,15 @@ const bookAppointment = async (req, res) => {
         slots_booked[slotDate].push(slotTime);
       }
     } else {
-      slots_booked[slotDate] = [];
-      slots_booked[slotDate].push(slotTime);
+      slots_booked[slotDate] = [slotTime];
     }
+
     const userData = await User.findById(userId).select("-password");
     delete docData.slots_booked;
+
+    // Generate unique Jitsi room
+    const jitsiRoom = `cura-sync-${crypto.randomBytes(6).toString("hex")}`;
+
     const appointmentData = {
       userId,
       docId,
@@ -194,16 +198,29 @@ const bookAppointment = async (req, res) => {
       slotDate,
       slotTime,
       date: Date.now(),
+      jitsiRoom, // ✅ add this field
+      payment: false, // default until paid
+      isCompleted: false,
     };
+
     const newAppointment = new Appointment(appointmentData);
     await newAppointment.save();
+
     await doctorModel.findByIdAndUpdate(docId, { slots_booked });
-    res.json({ success: true, message: "Appointment Booked" });
+
+    res.json({
+      success: true,
+      message: "Appointment booked successfully",
+      appointment: newAppointment,
+    });
   } catch (error) {
-    console.error(error.message);
-    res.json({ success: false, message: error.message });
+    console.error("Error booking appointment:", error.message);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+export default bookAppointment;
+
 // API to get user appointments for frontend my-appointments page
 const listAppointment = async (req, res) => {
   try {
@@ -290,6 +307,17 @@ const verifyRazorpay = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+// API to get Appointment by id
+const getAppointment = async (req, res) => {
+  try {
+    const appointmentId  = req.params.id;
+    const appointmentData = await Appointment.findById(appointmentId);
+    res.json({ success: true, appointmentData });
+  } catch (error) {
+    console.error("Razorpay Error:", error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
 export {
   register,
   login,
@@ -301,4 +329,5 @@ export {
   cancelAppointment,
   paymentRazorpay,
   verifyRazorpay,
+  getAppointment
 };

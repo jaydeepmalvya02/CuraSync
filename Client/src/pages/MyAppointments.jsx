@@ -132,26 +132,20 @@ const appointmentRazorpay=async(appointmentId)=>{
                 {formatDate(item.slotDate)} | {item.slotTime}
               </p>
             </div>
-            <div className="flex flex-col gap-2 justify-end">
-              {/* Payment Button */}
+            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 justify-end sm:items-end">
+              {/* Payment Status or Pay Button */}
               {item.cancelled ? (
-                <button
-                  disabled
-                  className="text-sm bg-red-500 text-white text-center sm:min-w-48 py-2 border opacity-70 cursor-not-allowed"
-                >
+                <span className="text-sm bg-red-500 text-white text-center sm:min-w-32 px-4 py-2 rounded opacity-70 cursor-not-allowed">
                   Cancelled
-                </button>
+                </span>
               ) : item.payment ? (
-                <button
-                  disabled
-                  className="text-sm bg-green-600 text-white text-center sm:min-w-48 py-2 border opacity-70 cursor-not-allowed"
-                >
+                <span className="text-sm bg-green-600 text-white text-center sm:min-w-32 px-4 py-2 rounded opacity-70 cursor-not-allowed">
                   Paid
-                </button>
+                </span>
               ) : (
                 <button
-                onClick={()=>appointmentRazorpay(item._id)}
-                  className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-primary hover:text-white transition-all duration-300"
+                  onClick={() => appointmentRazorpay(item._id)}
+                  className="text-sm border border-primary text-primary text-center sm:min-w-32 px-4 py-2 rounded hover:bg-primary hover:text-white transition-all duration-300"
                 >
                   Pay Online
                 </button>
@@ -161,9 +155,19 @@ const appointmentRazorpay=async(appointmentId)=>{
               {!item.cancelled && (
                 <button
                   onClick={() => cancelAppointment(item._id)}
-                  className="text-sm text-stone-500 text-center sm:min-w-48 py-2  border hover:bg-red-600 hover:text-white transition-all duration-300"
+                  className="text-sm border border-red-500 text-red-600 text-center sm:min-w-32 px-4 py-2 rounded hover:bg-red-600 hover:text-white transition-all duration-300"
                 >
                   Cancel Appointment
+                </button>
+              )}
+
+              {/* Video Call Button */}
+              {item.payment && !item.cancelled && item.jitsiRoom && (
+                <button
+                  onClick={() => navigate(`/video-call/${item._id}`)}
+                  className="text-sm border border-blue-500 text-blue-600 text-center sm:min-w-32 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition-all duration-300"
+                >
+                  Join Video Call
                 </button>
               )}
             </div>

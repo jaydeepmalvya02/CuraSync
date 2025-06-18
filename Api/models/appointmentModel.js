@@ -13,10 +13,10 @@ const appointmentSchema = new mongoose.Schema(
     docData: { type: Object, resquired: true },
     amount: { type: Number, required: true },
     date: { type: Number, required: true },
-    cancelled:{type:Boolean,default:false},
-    payment:{type:Boolean,default:false},
-    isCompleted:{type:Boolean,default:false},
-    
+    cancelled: { type: Boolean, default: false },
+    payment: { type: Boolean, default: false },
+    isCompleted: { type: Boolean, default: false },
+    jitsiRoom: { type: String, default: null },
   },
   { timestamps: true }
 );
