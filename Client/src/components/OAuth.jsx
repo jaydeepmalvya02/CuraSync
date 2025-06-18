@@ -19,16 +19,15 @@ export default function OAuth() {
       const { data } = await axios.post(
         `${backendUrl}/api/user/google`,
         {
-          data: JSON.stringify({
-            name: result.user.displayName,
-            email: result.user.email,
-            image: result.user.photoURL,
-          }),
+          name: result.user.displayName,
+          email: result.user.email,
+          image: result.user.photoURL,
         },
         {
           headers: { token },
         }
       );
+      
       if (data.success) {
         localStorage.setItem("token", data.token);
         setToken(data.token);

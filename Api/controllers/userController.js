@@ -76,36 +76,38 @@ const login = async (req, res) => {
 //google api
 const google = async (req, res) => {
   try {
-    const {  name,email } = req.body;
-    // console.log(req.body);
-    let user = await User.findOne({
-      email,
-    });
+    const { name, email,image } = req.body;
+
+    if (!name || !email) {
+      return res.status(400).json({ message: "Missing name or email" });
+    }
+
+    let user = await User.findOne({ email });
+
     if (!user) {
       const generatedPassword = Math.random().toString(36).slice(-8);
       const hashedPassword = await bcrypt.hash(generatedPassword, 10);
       user = new User({
         name,
         email,
+        image,
         password: hashedPassword,
       });
-
       await user.save();
     }
-    else{
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-      const { password: pass, ...rest } = user._doc;
-      res
-        .cookie("token", token, { httpOnly: true })
-        
-        .json({success:true,rest});
-    }
-    return CreatePayload(user, res);
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+    const { password: pass, ...rest } = user._doc;
+
+    res
+      .cookie("token", token, { httpOnly: true })
+      .json({ success: true, user: rest });
   } catch (error) {
     console.error("Google login error:", error.message);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 // API to Get user profile data
 const getProfile = async (req, res) => {
   console.log("id:", req.body);
