@@ -18,7 +18,7 @@ const AllAppointments = () => {
     if (aToken) {
       getAllAppointments();
     }
-  }, [aToken, getAllAppointments]);
+  }, [aToken,]);
 
   return (
     <div className="w-full max-w-6xl m-5">

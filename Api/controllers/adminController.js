@@ -172,5 +172,18 @@ const deleteAppointment=async(req,res)=>{
     res.json({ success: false, message: error.message });
   }
 }
+// API to delete doctor by id
+const deleteDoctor=async(req,res)=>{
+  try {
+    const docId=req.params.id
+    console.log(docId);
+    await doctorModel.findByIdAndDelete(docId)
+    res.json({success:true,message:"Doctor Deleted from DataBase"})
+    
+  } catch (error) {
+    console.error(error.message);
+    res.json({ success: false, message: error.message });
+  }
+}
 
-export { addDoctor,loginAdmin,allDoctors,appointmentsAdmin,appointmentCancel,adminDashboard,deleteAppointment };
+export { addDoctor,loginAdmin,allDoctors,appointmentsAdmin,appointmentCancel,adminDashboard,deleteAppointment,deleteDoctor };

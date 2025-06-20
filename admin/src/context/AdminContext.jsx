@@ -12,7 +12,8 @@ const AdminContextProvider = (props) => {
   const [doctors, setDoctors] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [dashData, setDashData] = useState(false);
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URL ;
 
   const getAllDoctors = async () => {
     try {
@@ -113,6 +114,19 @@ const AdminContextProvider = (props) => {
       toast.error(error.message);
     }
   }
+  // Delete Doctor
+  const deleteDoctor=async(docId)=>{
+    try {
+      const {data}=await axios.delete(`${backendUrl}/api/admin/del-doctor/${docId}`,{headers:{aToken}})
+      if (data.success){
+        getAllDoctors()
+        toast.success(data.message)
+      }
+    } catch (error) {
+      console.error(error.message);
+      toast.error(error.message);
+    }
+  }
   const value = {
     aToken,
     setAToken,
@@ -126,7 +140,8 @@ const AdminContextProvider = (props) => {
     cancelAppointment,
     dashData,
     getDashData,
-    deleteAppointment
+    deleteAppointment,deleteDoctor
+
   };
   return (
     <AdminContext.Provider value={value}>

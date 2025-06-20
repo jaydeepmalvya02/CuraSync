@@ -13,7 +13,7 @@ const Dashboard = () => {
     if (aToken) {
       getDashData();
     }
-  }, [aToken, getDashData]);
+  }, [aToken,]);
   return (
     dashData && (
       <div className="m-5">
